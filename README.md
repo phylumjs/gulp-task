@@ -1,4 +1,9 @@
 # Gulp Task
+[![Coverage Status](https://coveralls.io/repos/github/phylumjs/gulp-task/badge.svg?branch=master)](https://coveralls.io/github/phylumjs/gulp-task?branch=master)
+[![Build Status](https://travis-ci.com/phylumjs/gulp-task.svg?branch=master)](https://travis-ci.com/phylumjs/gulp-task)
+![Version](https://img.shields.io/npm/v/@phylum/gulp-task.svg)
+![License](https://img.shields.io/npm/l/@phylum/gulp-task.svg)
+
 Allows embedding gulp tasks as pipeline tasks.
 
 ## Installation
