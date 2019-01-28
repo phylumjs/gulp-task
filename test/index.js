@@ -61,19 +61,28 @@ test('named task (not found)', async t => {
 })
 
 test('capture last run', async t => {
-	function reject(callback) {
-		callback(new Error('foo'))
+	let shouldFail = false
+	function task(callback) {
+		if (shouldFail) {
+			callback(new Error('foo'))
+		} else {
+			callback()
+		}
 	}
-	function resolve(callback) {
-		callback()
-	}
+
 	const pipeline = new Pipeline(async ctx => {
-		await t.throwsAsync(ctx.use(wrap(reject)))
-		await ctx.use(wrap(resolve))
+		if (shouldFail) {
+			await t.throwsAsync(ctx.use(wrap(task)))
+		} else {
+			await ctx.use(wrap(task))
+		}
 	})
-	t.is(gulp.lastRun(reject), undefined)
-	t.is(gulp.lastRun(resolve), undefined)
+	t.is(gulp.lastRun(task), undefined)
 	await pipeline.enable()
-	t.is(gulp.lastRun(reject), undefined)
-	t.is(typeof gulp.lastRun(resolve), 'number')
+	pipeline.disable()
+	t.is(typeof gulp.lastRun(task), 'number')
+
+	shouldFail = true
+	await pipeline.enable()
+	t.is(gulp.lastRun(task), undefined)
 })
